@@ -28,8 +28,8 @@ export const Footer = () => {
         </div>
         <div className=''>
             <div className='flex flex-col font-semibold text-base text-[#ffffffba]'>
-              <p>Finstreet 118 2561 abctown</p>
-              <p>example@femail.com  001 21345 442</p>
+              <p>Developer</p>
+              <p>example@email.com  00001 10000</p>
             </div>
             <div>
 
