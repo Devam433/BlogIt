@@ -2,14 +2,19 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Root from "./Pages/Root.jsx"
+import Root from "./Pages/Root.jsx";
 import { Home } from './Pages/Home.jsx';
 import { Blogs } from './Pages/Blogs.jsx';
-import { About } from './Pages/About.jsx';
-import { Contact } from './Pages/Contact.jsx';
+import  {Login}  from './Pages/Login.jsx';
+import  SignUp  from './Pages/SignUp.jsx';
+import  AddPost from './Pages/AddPost.jsx';
 import { ErrorPage } from './Pages/ErrorPage.jsx';
 import { Blog } from './Pages/Blog.jsx';
-import { Navbar } from './Components/Navbar.jsx';
+import { Provider } from "react-redux";
+import { store } from './store/store.js';
+import Library from './Pages/Library.jsx';
+import MyProfile from './Pages/MyProfile.jsx';
+import EditPost from './Components/EditPost.jsx';
 
 const router = createBrowserRouter(
   [
@@ -25,18 +30,34 @@ const router = createBrowserRouter(
         {
           path:"blogs",
           element:<Blogs/>,
-          children:[{
-            path:":blogid",
-            element:<Blog/>
-          }]
         },
         {
-          path:'about',
-          element:<About/>,
+          path:"/blogs/:id",
+          element:<Blog/>,
         },
         {
-          path:'contact',
-          element:<Contact/>,
+          path:'/login',
+          element:<Login/>,
+        },
+        {
+          path:'/signup',
+          element:<SignUp/>,
+        },
+        {
+          path:'/addpost',
+          element:<AddPost/>,
+        },
+        {
+          path: '/editpost/:id',
+          element:<EditPost/>,
+        },
+        {
+          path:'/library',
+          element:<Library/>,
+        },
+        {
+          path:'/profile',
+          element:<MyProfile/>,
         }
       ]      
     }
@@ -44,7 +65,7 @@ const router = createBrowserRouter(
 )
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <RouterProvider router={router}/>
-  </React.StrictMode>,
+    <Provider store={ store }>
+      <RouterProvider router={router}/>
+    </Provider>
 )
