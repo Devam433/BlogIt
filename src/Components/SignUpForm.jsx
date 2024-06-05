@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import authService from '../appwrite/auth';
 import { useDispatch } from 'react-redux';
-import { login as authLogin } from '../features/authSlice';
+import { login as authLogin, setAvatar } from '../features/authSlice';
 import Input from './Input';
 import Button from './Button';
 import { set, useForm } from 'react-hook-form';
@@ -31,6 +31,10 @@ export const SignUpForm = () => {
                     const userData = await authService.getCurrentUser(); //if session creation success the get userData
                     if(userData) {
                         dispatch(authLogin(userData));
+                        const initials = authService.generateInitials(userData.name)
+                        const avaratUrl = authService.getAvatarUrl(initials)
+                        console.log(avaratUrl);
+                        dispatch(setAvatar(avaratUrl));
                         navigate('/');
                     }
                     else {

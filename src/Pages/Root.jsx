@@ -24,7 +24,7 @@ function Root() {
       })
       .catch((error)=>{console.log('UnerNotLoggedIn',error)})
       // .finally(()=>{setLoading(false)}); // this will always execute even an exception and was thrown and was caught by the .catch()
-  },[])
+  },[dispatch])
 
   return (
     <>
