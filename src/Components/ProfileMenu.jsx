@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../features/authSlice'
 import authService from '../appwrite/auth'
 
@@ -12,6 +12,9 @@ function ProfileMenu() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [open,setOpen] = useState(false);
+
+    const userAvatarUrl = useSelector(state => state.auth.userAvatarUrl);
+    
 
     function handleOnClick(item) {
         if(item.id == 4) {
@@ -62,7 +65,7 @@ function ProfileMenu() {
   return (
     <div className='flex flex-col items-center '> {/** Menu Container */}
         <div className='border-red-400 hover: cursor-pointer' onClick={()=>{setOpen(prev=>!prev)}}> {/** Menu Trigger */}
-            <img src="" alt="" className=' h-12 rounded-full border w-12 bg-purple-300'/>
+            <img src={userAvatarUrl} alt="" className=' h-12 rounded-full border w-12 bg-purple-300'/>
         </div>
         
         { open ?  

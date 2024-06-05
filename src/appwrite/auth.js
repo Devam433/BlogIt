@@ -1,6 +1,6 @@
 import config from "../config/config";
 
-import { Client, Account, ID } from "appwrite";
+import { Client, Account, ID, Avatars} from "appwrite";
 
 export class AuthService{
     client = new Client();
@@ -11,25 +11,16 @@ export class AuthService{
                 .setEndpoint(config.appwriteUrl)
                 .setProject(config.appwriteProjectId);
         this.account= new Account(this.client);
+        this.avatars = new Avatars(this.client);
     }
 
     async createAccount({Email,Password,Name}){
         try{
-            console.log(Email)
-            console.log(Password)
-
-            console.log(Name)
-
-        const userAccount = await this.account.create(ID.unique(),Email,Password);
-        if(userAccount){
-            //if userAccount exists then directly proceed to logging in
-            this.login({Email,Password});
-        }
-        else{
+            const userAccount = await this.account.create(ID.unique(),Email,Password,Name);
             return userAccount;
-        }
         }catch(err){
-            console.log(err);
+            // console.log(err.code);//409 means email already exsts
+            return err;
         }
     }
 
@@ -37,17 +28,33 @@ export class AuthService{
         try{
             return await this.account.createEmailPasswordSession(Email,Password)
         }catch(err){
-            console.log(err);
+            // console.log(err);
+            return err;
         }
     }
 
     async getCurrentUser(){
         try {
-            return await this.account.get();
+            return await this.account.get(); //for this to not through error, Session must be created
         } catch (error) {
             console.log(error)
         }
         return null
+    }
+
+    // getAvatar(userId) {
+    //     const avatar = this.avatars.getInitials(userId);
+    //     return avatar.href;
+    // }
+
+    generateInitials(name) {
+        const initials = name.split(' ').map(word => word[0]).join('').toUpperCase();
+        return initials;
+    }
+
+    getAvatarUrl(initials) {
+        const avatarUrl = this.avatars.getInitials(initials).href;
+        return avatarUrl;
     }
 
     async logout(){

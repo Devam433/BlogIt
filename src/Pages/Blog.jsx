@@ -78,7 +78,7 @@ const dispatch = useDispatch();
       })
     }
     })
-  },[id,userData.userData.$id])
+  },[id,userData?.userData?.$id])
 
   return  !isDateLoading ? (
     <div className='w-[full] flex justify-center pt-[90px] mb-28'>

@@ -13,7 +13,7 @@ function Library() {
   const dispatch = useDispatch();
 
   useEffect(()=>{
-    dbService.getLikes(null,userData.userData.$id).then((res)=>{
+    dbService.getLikes(null,userData?.userData.$id).then((res)=>{
       dispatch(setLikedBlogs(res))
     })
   },[userData,dispatch])
