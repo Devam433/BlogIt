@@ -22,7 +22,6 @@ const authSlice = createSlice({
             state.userData = null;
         },
         setAvatar: (state,action) => {
-            console.log(action.payload);
             state.userAvatarUrl = action.payload;
         }
     }

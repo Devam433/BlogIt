@@ -12,6 +12,7 @@ export const LogoutBtn = () => {
         authService.logout()
           .then(()=>{
             dispatch(logout());
+            dispatch(addPosts([]))
             navigate('/')
           });
     }

@@ -17,7 +17,6 @@ export const SignUpForm = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const createAccount = async (data) => {
-        console.log('SignUp start')
         setLoggingIn(true);
         try {
             const result = await authService.createAccount({...data}); //creates Account
@@ -33,7 +32,6 @@ export const SignUpForm = () => {
                         dispatch(authLogin(userData));
                         const initials = authService.generateInitials(userData.name)
                         const avaratUrl = authService.getAvatarUrl(initials)
-                        console.log(avaratUrl);
                         dispatch(setAvatar(avaratUrl));
                         navigate('/');
                     }
@@ -47,7 +45,7 @@ export const SignUpForm = () => {
                 }
             }
         } catch (error) {
-            console.log(error)
+            console.log(error);
             console.log('Failed SignUp');
         } finally {
             setLoggingIn(false);

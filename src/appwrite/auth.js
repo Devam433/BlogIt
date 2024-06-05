@@ -28,7 +28,6 @@ export class AuthService{
         try{
             return await this.account.createEmailPasswordSession(Email,Password)
         }catch(err){
-            // console.log(err);
             return err;
         }
     }
@@ -41,11 +40,6 @@ export class AuthService{
         }
         return null
     }
-
-    // getAvatar(userId) {
-    //     const avatar = this.avatars.getInitials(userId);
-    //     return avatar.href;
-    // }
 
     generateInitials(name) {
         const initials = name.split(' ').map(word => word[0]).join('').toUpperCase();

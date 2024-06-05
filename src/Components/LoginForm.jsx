@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Input from './Input';
 import authService from '../appwrite/auth';
-import { login as storeLogin } from '../features/authSlice';
+import { setAvatar, login as storeLogin } from '../features/authSlice';
 import { useDispatch } from 'react-redux';
 import Button from './Button';
 import { useForm } from 'react-hook-form';
@@ -34,7 +34,6 @@ export const LoginForm = () => {
                 }
             }
         } catch (error) {
-            console.log('LoginFormError');
             console.log(error);
             setError('Login Failed!')
         } finally {
