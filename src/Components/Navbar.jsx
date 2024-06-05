@@ -5,6 +5,7 @@ import ProfileMenu from './ProfileMenu';
 export const Navbar = () => {
 
   const currentUserStatus=useSelector(state=>state.auth.status);
+  
   const navItems = [
     {
       name:'Home',
