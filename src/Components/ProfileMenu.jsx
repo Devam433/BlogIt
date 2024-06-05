@@ -6,6 +6,7 @@ import authService from '../appwrite/auth'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faBook, faQuestionCircle, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { addPosts } from '../features/postSlice'
 
 function ProfileMenu() {
 
@@ -30,6 +31,7 @@ function ProfileMenu() {
         authService.logout()
           .then(()=>{
             dispatch(logout());
+            dispatch(addPosts([]))
             navigate('/');
           });
     }
