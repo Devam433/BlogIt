@@ -5,7 +5,6 @@ import { setLikedBlogs } from '../features/likeSlice';
 import { LikedBlogCard } from '../Components/LikedBlogCard';
 
 function Library() {
-  console.log('Library Render')
   const userData = useSelector(state=>state.auth.userData);
   const allPosts = useSelector(state => state.posts.allPosts);
   const likedBlogs = useSelector(state => state.likes.likedBlogs);

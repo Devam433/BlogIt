@@ -22,7 +22,7 @@ function Root() {
           dispatch(logout());
         }
       })
-      .catch((error)=>{console.log('UnerNotLoggedIn',error)})
+      .catch((error)=>{console.log('User NotLoggedIn',error)})
       // .finally(()=>{setLoading(false)}); // this will always execute even an exception and was thrown and was caught by the .catch()
   },[dispatch])
 

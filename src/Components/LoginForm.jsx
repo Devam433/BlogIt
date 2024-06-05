@@ -34,7 +34,6 @@ export const LoginForm = () => {
                 }
             }
         } catch (error) {
-            console.log('LoginFormError');
             console.log(error);
             setError('Login Failed!')
         } finally {
