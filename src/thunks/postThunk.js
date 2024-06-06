@@ -6,7 +6,7 @@ const fetchPost = () => async dispatch => {
       const posts = await dbService.getPosts();
       dispatch(addPosts(posts.documents));
     } catch (error) {
-      dispatch(setError(error));
+      dispatch(setError(error.message));
     } finally {
       dispatch(setLoading(false));
     }

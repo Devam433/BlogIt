@@ -26,7 +26,7 @@ export const LoginForm = () => {
             else {
                 const userData = await authService.getCurrentUser();
                 if(userData) {
-                    dispatch(storeLogin(userData));
+                    dispatch(storeLogin({userData}));
                     const initials = authService.generateInitials(userData.name)
                     const avaratUrl = authService.getAvatarUrl(initials)
                     dispatch(setAvatar(avaratUrl));
