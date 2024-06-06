@@ -1,11 +1,21 @@
-import React from 'react'
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { ProfileMyBlogCard } from '../Components/ProfileMyBlogCard';
+import fetchPost from '../thunks/postThunk';
 
 function MyProfile() {
 
   const userData = useSelector(state=>state.auth.userData);
   const allPosts = useSelector(state => state.posts.allPosts);
+
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    if(allPosts.length == 0) {
+      dispatch(fetchPost());
+    }
+  },[allPosts.length]);
+
   return (
     <div className='w-[full] flex justify-center mt-20'>
       <div className='w-[1210px]'>
