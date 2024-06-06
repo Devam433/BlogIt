@@ -22,6 +22,7 @@ export const Blog = () => {
   const [post] = allPosts.filter((post)=>post.$id === id);
 
   const [currentLikeId,setCurrentLikeId] = useState();
+
   function date_content_Format(){
     //format date
     setIsDateLoading(true)
@@ -49,7 +50,7 @@ const dispatch = useDispatch();
       dbService.deleteLike({ documentId: currentLikeId, articleid: post.$id }).then(() => {
         // dispatch(decrementLike({ articleid: post.$id }));
         // setIsLikedByUser(false);
-        setIsClick(false);
+        // setIsClick(false);
         dispatch(fetchPost())
       });
     } else {
@@ -60,7 +61,8 @@ const dispatch = useDispatch();
         setCurrentLikeId(data.$id);
         // dispatch(incrementLike({ articleid: post.$id }));
         // setIsLikedByUser(true);
-        setIsClick(true);
+
+        // setIsClick(true);
         dispatch(fetchPost())
 
       });
