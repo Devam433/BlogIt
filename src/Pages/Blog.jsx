@@ -1,86 +1,77 @@
-
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import dbService from '../appwrite/dbConfig'
-import parse from 'html-react-parser'
-import ContentLoader from 'react-content-loader'
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import dbService from '../appwrite/dbConfig';
+import parse from 'html-react-parser';
+import ContentLoader from 'react-content-loader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faBookmark, faHeart, faShareFromSquare} from '@fortawesome/free-regular-svg-icons'
-import { useDispatch, useSelector } from 'react-redux'
-import { decrementLike, incrementLike, setTotalLikes } from '../features/likeSlice'
+import { faBookmark, faHeart, faShareFromSquare } from '@fortawesome/free-regular-svg-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { decrementLike, incrementLike, setTotalLikes } from '../features/likeSlice';
 import fetchPost from '../thunks/postThunk';
 
 export const Blog = () => {
   const { id } = useParams();
-  const userData = useSelector(state=>state.auth.userData);
+  const userData = useSelector(state => state.auth.userData);
 
-  const [date,setDate] = useState(null);
-  const [isDateLoading,setIsDateLoading] = useState(true);
-  const [isLikedByUser,setIsLikedByUser] = useState(false);
-  const totalLikes = useSelector(state=>state.likes.totalLikes);
-  const allPosts = useSelector(state=>state.posts.allPosts);
-  const [post] = allPosts.filter((post)=>post.$id === id);
+  const [date, setDate] = useState(null);
+  const [isDateLoading, setIsDateLoading] = useState(true);
+  const [isLikedByUser, setIsLikedByUser] = useState(false);
+  const [currentLikeId, setCurrentLikeId] = useState(null);
 
-  const [currentLikeId,setCurrentLikeId] = useState();
+  const totalLikes = useSelector(state => state.likes.totalLikes);
+  const allPosts = useSelector(state => state.posts.allPosts);
+  const post = allPosts.find((post) => post.$id === id);
 
-  function date_content_Format(){
-    //format date
-    setIsDateLoading(true)
-    const dateString = post?.$createdAt;
-    const date = new Date(dateString);
-    const formattedDate = date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
-    setDate(formattedDate);
-    setIsDateLoading(false);
-  }
-const dispatch = useDispatch();
-  useEffect(()=>{
-    date_content_Format();
-    
-    dispatch(setTotalLikes({articleid:post?.$id, likes:post?.likes}))
-  },[id,post]) // post is important as we get the date only after post is available
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (post) {
+      date_content_Format();
+      dispatch(setTotalLikes({ articleid: post.$id, likes: post.likes }));
+
+      if (userData?.userData?.$id) {
+        dbService.getLikes(post.$id).then((data) => {
+          if (data) {
+            const userLike = data.documents.find((like) => like.userid === userData.userData.$id);
+            if (userLike) {
+              setCurrentLikeId(userLike.$id);
+              setIsLikedByUser(true);
+            }
+          }
+        });
+      }
+    }
+  }, [id, post, userData]);
 
   const handleLikeClick = () => {
     if (isLikedByUser) {
       dispatch(decrementLike({ articleid: post.$id }));
       setIsLikedByUser(false);
       dbService.deleteLike({ documentId: currentLikeId, articleid: post.$id }).then(() => {
-        // dispatch(decrementLike({ articleid: post.$id }));
-        // setIsLikedByUser(false);
-        // setIsClick(false);
-        dispatch(fetchPost())
+        dispatch(fetchPost());
       });
     } else {
       dispatch(incrementLike({ articleid: post.$id }));
       setIsLikedByUser(true);
-
       dbService.createLike({ articleid: post.$id, userid: userData.userData.$id }).then((data) => {
         setCurrentLikeId(data.$id);
-        // dispatch(incrementLike({ articleid: post.$id }));
-        // setIsLikedByUser(true);
-
-        // setIsClick(true);
-        dispatch(fetchPost())
-
+        dispatch(fetchPost());
       });
     }
   };
-  
-  useEffect(()=>{
-    dbService.getLikes(id).then((data) => {
-      if(data) {
-      data.documents.forEach((like) => {
-        if(like.userid == userData.userData.$id) {
-          setCurrentLikeId(like.$id)
-          setIsLikedByUser(true);
-        }
-      })
-    }
-    })
-  },[id,userData?.userData?.$id])
+
+  function date_content_Format() {
+    setIsDateLoading(true);
+    const dateString = post?.$createdAt;
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    setDate(formattedDate);
+    setIsDateLoading(false);
+  }
 
   return  !isDateLoading ? (
     <div className='w-[full] flex justify-center pt-[90px] mb-28'>
@@ -104,7 +95,6 @@ const dispatch = useDispatch();
                   <section className=' font-sans text-2xl'>
                     {post ? parse(post.content) : null}
                   </section>
-                  {/* <h5></h5> */}
                 </article> 
 
                 <section className=' h-28  mt-12 flex justify-between px-4 pt-4 border-t'>
