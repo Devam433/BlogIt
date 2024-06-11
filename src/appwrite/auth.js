@@ -58,6 +58,16 @@ export class AuthService{
             console.log(error);
         }
     }
+
+    async googleLogin() {
+        const res = await this.account.createOAuth2Session(
+            'google',
+            'http://localhost:5173',
+            'https://localhost:5173/fail',
+        )
+        console.log(res);
+        return res;
+    }
 }
 
 const authService = new AuthService;
