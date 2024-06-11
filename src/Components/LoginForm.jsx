@@ -7,6 +7,7 @@ import Button from './Button';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import ClipLoader from 'react-spinners/ClipLoader';
+import GoogleSvg from '../assets/GoogleSvg';
 
 export const LoginForm = () => {
     const {register, handleSubmit, formState: {errors}} = useForm();
@@ -41,6 +42,14 @@ export const LoginForm = () => {
         }
     }
 
+    async function handleGoogleLogin(e) {
+        e.preventDefault()
+        console.log('inside handleGoogleLoginFun')
+        const res = await authService.googleLogin();
+        console.log('after resssss')
+        console.log(res)
+    }
+
     return (
         <div className='mt-40 mb-40'>
             <div>
@@ -67,10 +76,20 @@ export const LoginForm = () => {
                                 })}
                             />
                         </div>
-                        <Button type='submit'>Log In</Button>
+                        <div className='flex flex-col'>
+                            <Button type='submit' className='w-[100%]'>Log In</Button>
+                            <div className="flex items-center">
+                            <button onClick={(e)=>handleGoogleLogin(e)} className="w-[100%] flex items-center bg-white dark:bg-gray-100 border border-gray-300 rounded-lg shadow-md px-6 py-2 text-lg font-medium text-grey-900 hover:bg-gray-200 hover:text-gray-900 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                            <GoogleSvg/>
+                            <span>Continue with Google</span>
+                            </button>
+                            </div>
+                        </div>
                         <p>Don't have an account? <Link to='/signup' className=' text-blue-400 hover:underline'>SignUp Here!</Link></p>
                     </div>
                 </form>
+                {/* <button onClick={(e)=>handleGoogleLogin(e)}>LogIn with Google</button> */}
+                
             </div>
             {loggingIn && ( // Conditionally render overlay and loading indicator
                 <div className="fixed top-0 left-0 w-full h-full bg-white bg-opacity-50 flex justify-center items-center z-50">
