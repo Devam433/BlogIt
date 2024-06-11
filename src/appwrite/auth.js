@@ -62,8 +62,8 @@ export class AuthService{
     async googleLogin() {
         const res = await this.account.createOAuth2Session(
             'google',
-            'http://localhost:5173',
-            'https://localhost:5173/fail',
+            'https://blog-it-omega.vercel.app',
+            'https://localhost:5173/login',
         )
         console.log(res);
         return res;
